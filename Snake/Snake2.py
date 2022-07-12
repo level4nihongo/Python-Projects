@@ -29,14 +29,13 @@ class SNAKE:
 
     def makebigger(self):
         self.newblock = True
-
 class FOOD:
     def __init__(self):
         self.newposition()
 
     def drawfood(self):
         fruit = pygame.Rect(self.pos.x * size, self.pos.y * size, size, size)
-        scr.blit(appple, fruit)
+        scr.blit(apple, fruit)
         #pygame.draw.rect(scr, food_color, fruit)
 
     def newposition(self):
@@ -57,8 +56,10 @@ class MAIN:
             self.check_fail()
 
     def drawelements(self):
+        self.drawgrass()
         self.food.drawfood()
         self.snake.drawsnake()
+
 
     def checkcollision(self):
         if self.food.pos == self.snake.body[0]:
@@ -83,16 +84,28 @@ class MAIN:
         pygame.quit()
         sys.exit()
 
+    def drawgrass(self):
+        grasscolor = (255,250,170)
+        for row in range(number):
+            if row % 2 == 0:
+                for column in range(number):
+                    if column % 2 == 0:
+                        grassrect = pygame.Rect(column*size, row*size, size, size)
+                        pygame.draw.rect(scr, grasscolor, grassrect)
+            else:
+                for column in range(number):
+                    if column % 2 == 1:
+                        grassrect = pygame.Rect(column*size, row*size, size, size)
+                        pygame.draw.rect(scr, grasscolor, grassrect)
 #start pygame
 pygame.init()
-size = 20
-number = 30
+size = 40
+number = 25
 scr = pygame.display.set_mode((size*number,size*number))
 clock = pygame.time.Clock()
-apple = pygame.image.load('apple.png').convert_alpha()
-
-snake_color = (255,255,220)
-food_color = (200, 40, 100)
+apple = pygame.image.load('D:/apple.png').convert_alpha()
+apple = pygame.transform.scale(apple, (size,size))
+snake_color = (50,150,255)
 
 main = MAIN()
 
@@ -127,8 +140,7 @@ while True:
             if event.key == pygame.K_SPACE:
                 main.snake.direction = Vector2(0, 0)
                 moving = False
-    scr.fill(pygame.Color('pink'))
-    main.snake.drawsnake()
-    main.food.drawfood()
+    scr.fill(pygame.Color(255,200,160))
+    main.drawelements()
     pygame.display.update()
     clock.tick(120)
